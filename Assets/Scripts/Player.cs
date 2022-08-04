@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     float x, z;
-    float speed = 0.1f;
+    float speed = 0.01f;
 
     Quaternion characterRot;
     float Xsensityvity = 3f, Ysensityvity = 3f;
