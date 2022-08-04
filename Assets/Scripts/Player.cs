@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         float xRot = Input.GetAxis("Mouse X") * Ysensityvity;
-        float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;
+        // float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;
 
         characterRot *= Quaternion.Euler(0, xRot, 0);
         transform.localRotation = characterRot;
