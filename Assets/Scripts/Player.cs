@@ -5,16 +5,21 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     float x, z;
-    float speed = 0.01f;
+    float speed = 0.001f;
 
     Quaternion characterRot;
     float Xsensityvity = 3f, Ysensityvity = 3f;
     
     bool cursorLock = true;
 
+    Rigidbody rb;
+
     void Start()
     {
         characterRot = transform.localRotation;
+        
+        //Rigidbodyを取得
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -25,8 +30,16 @@ public class Player : MonoBehaviour
 
         characterRot *= Quaternion.Euler(0, xRot, 0);
         transform.localRotation = characterRot;
+        
+        //もしスペースキーが押されたら
+        if (Input.GetKey(KeyCode.Space))
+        {
+            //Rigidbodyを停止
+            rb.velocity = Vector3.zero;
+            Debug.Log("スペースキー");
+        }
 
-
+        // カーソルの表示・非表示
         UpdateCursorLock();
     }
 
