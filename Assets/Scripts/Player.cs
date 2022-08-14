@@ -5,15 +5,11 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     float x, z;
-    float speed = 0.1f;
+    float speed = 1.0f;
 
-    Quaternion characterRot;
-    float Xsensityvity = 3f, Ysensityvity = 3f;
-    
+    public GameObject Vehicle;
+
     bool cursorLock = true;
-
-    Rigidbody rb;
-
 
     // 弾
     [SerializeField]
@@ -26,49 +22,27 @@ public class Player : MonoBehaviour
 
     // [SerializeField]
     // [Tooltip("弾の速さ")]
-    private float Speed = 45f;
-
-    void Start()
-    {
-        characterRot = transform.localRotation;
-        
-        //Rigidbodyを取得
-        rb = GetComponent<Rigidbody>();
-    }
+    private float speed_bullet = 45f;
 
     // Update is called once per frame
     void Update()
     {
-        // float xRot = Input.GetAxis("Mouse X") * Ysensityvity;
-        // // float yRot = Input.GetAxis("Mouse Y") * Xsensityvity;
-
-        // characterRot *= Quaternion.Euler(0, xRot, 0);
-        // transform.localRotation = characterRot;
-        
-        // //もしスペースキーが押されたら
-        // if (Input.GetKey(KeyCode.Space))
-        // {
-        //     // //Rigidbodyを停止
-        //     rb.velocity = Vector3.zero;
-        //     // Debug.Log("スペースキー");
-            
-        //     // 弾を発射する
-        //     // LauncherShot();
-        // }
-
         // カーソルの表示・非表示
-        UpdateCursorLock();
+        // UpdateCursorLock();
     }
 
     private void FixedUpdate()
     {
-        // x = 0;
-        // z = 0;
+        x = Input.GetAxisRaw("Horizontal") * 0.5f;
+        z = Input.GetAxisRaw("Vertical") * speed;
+        Vector3 direction = Vehicle.transform.forward;    //  Z軸方向取得
 
-        // x = Input.GetAxisRaw("Horizontal") * speed;
-        // z = Input.GetAxisRaw("Vertical") * speed;
+        // 前後方向のアクセル
+        Vehicle.GetComponent<Rigidbody>().AddForce(direction * z, ForceMode.Impulse);
 
-        // transform.position += transform.forward * z + transform.right * x;
+        // 回転の制御
+        Vehicle.GetComponent<Rigidbody>().AddTorque(x * Vector3.up * Mathf.PI, ForceMode.Impulse);
+
         
         //もしスペースキーが押されたら
         if (Input.GetKey(KeyCode.Space))
@@ -77,7 +51,6 @@ public class Player : MonoBehaviour
             LauncherShot();
         }
     }
-
 
     public void UpdateCursorLock()
     {
@@ -110,17 +83,10 @@ public class Player : MonoBehaviour
         // 出現させたボールのforward(z軸方向)
         Vector3 direction = newBall.transform.forward;
         // 弾の発射方向にnewBallのz方向(ローカル座標)を入れ、弾オブジェクトのrigidbodyに衝撃力を加える
-        newBall.GetComponent<Rigidbody>().AddForce(direction * Speed, ForceMode.Impulse);
+        newBall.GetComponent<Rigidbody>().AddForce(direction * speed_bullet, ForceMode.Impulse);
         // 出現させたボールの名前を"bullet"に変更
         newBall.name = bullet.name;
         // 出現させたボールを0.8秒後に消す
         Destroy(newBall, 0.8f);
     }
-}
-[System.Serializable]
-public class AxleInfo {
-    public WheelCollider leftWheel;
-    public WheelCollider rightWheel;
-    public bool motor; //駆動輪か?
-    public bool steering; //ハンドル操作をしたときに角度が変わるか？
 }

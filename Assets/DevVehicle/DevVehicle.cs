@@ -20,13 +20,5 @@ public class DevVehicle : MonoBehaviour
 
         // 回転の制御
         Vehicle.GetComponent<Rigidbody>().AddTorque(x * Vector3.up * Mathf.PI, ForceMode.Impulse);
-
-        // //もしスペースキーが押されたら
-        // if (Input.GetKey(KeyCode.Space))
-        // {
-        //     // 出現させたボールのforward(z軸方向)
-        //     Vector3 direction = Wheel.transform.forward;
-        //     Wheel.GetComponent<Rigidbody>().AddForce(direction * speed, ForceMode.Impulse);
-        // }
     }
 }
